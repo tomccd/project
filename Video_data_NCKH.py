@@ -12,7 +12,6 @@ import pyodbc as odbc
 import traceback
 import pandas as pd
 import sys
-import threading
 
 data = 'xx'
 data1=''
@@ -86,9 +85,10 @@ table.column("6",widt=150)
 
 table.pack(fill="both",padx=0,pady=350)
 
+
 nameTableData = tk.StringVar()
 
-def setup_table(name, time_label = None):
+def setup_table(name, time_label):
     table.delete(*table.get_children())
     nameTable.config(text=name)
     table.config(columns=colum_NhapKho)
@@ -112,7 +112,7 @@ def xuatKho():
     setup_table("Bảng xuất kho", "Thời gian xuất")
 
 def tongKho():
-    setup_table("Bảng tổng kho")
+    setup_table("Bảng tổng kho", "Thời gian")
 
 #RadioButton NhapKho
 r = ttk.Radiobutton(
@@ -138,25 +138,6 @@ r2 = ttk.Radiobutton(
         variable=nameTableData,
         command=tongKho
     ).place(x=20,y=650)
-
-def ExportElxs():
-    global conn
-    global nameTableData
-    name_table = str(nameTableData.get())
-    kq = pd.read_sql(f'SELECT * FROM Bang_{name_table}_Kho',conn)
-    df = pd.DataFrame(kq)
-    df.to_excel('test1.xlsx',sheet_name='kq1')
-    # print(name_table)
-
-def on_btXuatExcel():
-    excel = threading.Thread(target=ExportElxs)
-    excel.start()
-
-btXuatExcel = tk.Button(
-    master=frame2,
-    text='Xuất file excel',
-    command=on_btXuatExcel                   
-    ).place(x=10,y=700)
 
 ##############################################################################################################################
 
@@ -290,6 +271,9 @@ def capturedVideo():
             data_frame = list(data.split(","))
             data_frame = list(data_frame)
             df = pd.read_sql('SELECT * FROM Bang_Tong_Kho',conn)
+            df_TbNhap = pd.read_sql('SELECT * FROM Bang_Nhap_Kho',conn)
+            df1 = pd.DataFrame(df_TbNhap)
+            df1.to_excel('test1.xlsx',sheet_name='kq1')
             if data_frame[0] in df['MaHang'].values:
                 frame_text = cv.putText(frame_drew,text=f'Ma:{data_frame[0]},In Stock',fontFace=cv.FONT_HERSHEY_PLAIN,fontScale=3,color=(0,255,0),org=point_text,thickness=2)
                 # if ktratable != nameTableData.get():
@@ -354,6 +338,15 @@ def capturedVideo():
     
     
     
+    
+
+
+
+
+
+
+
+
 capturedVideo()
 root.mainloop()
 camera.release()
