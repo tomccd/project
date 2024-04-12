@@ -353,7 +353,7 @@ def capturedVideo():
     #         last_data = data
     
     
-    
+#Hoàng đã ở đây nè    
 capturedVideo()
 root.mainloop()
 camera.release()
