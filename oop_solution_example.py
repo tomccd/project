@@ -78,12 +78,20 @@ class Tab1(baseLayout_Tab):
         #Kế thừa hàm khởi tạo
         super().__init__(parent,dimension)
         self.text = "Hoang"
+        #Configure text inside label
+        self.text_label.configure(
+            text = self.text
+        )
 
 class Tab2(baseLayout_Tab):
     def __init__(self,parent,dimension):
         #Kế thừa hàm khởi tạo
         super().__init__(parent,dimension)
         self.text = "Bla"
+        #Configure text inside label
+        self.text_label.configure(
+            text = self.text
+        )
         self.button = tk.Button(
             self,
             text="Bấm đi",
@@ -97,3 +105,4 @@ if __name__ == "__main__":
     app = myApp("Hoang",(800,600))
     app.after(20,app.cameraLoop)
     app.mainloop()
+        
